@@ -1,6 +1,5 @@
 {
   "name": "remote-assignments",
-  "description": "# Environment requirements",
   "version": "1.0.0",
   "type": "module",
   "main": "app.js",
