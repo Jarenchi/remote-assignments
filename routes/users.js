@@ -1,9 +1,10 @@
 import express from "express";
 import { getUser, createUser } from "../database.js";
-
+import { checkContentType, checkRequestDate } from "../middleware/middleware.js";
+import { isValidName, isValidEmail, isValidPassword } from "../utils/utils.js";
 const router = express.Router();
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkContentType, checkRequestDate, async (req, res) => {
   const id = req.params.id;
   if (isNaN(id)) {
     return res.status(404).send("Invalid Id. It must be a number.");
@@ -13,6 +14,7 @@ router.get("/:id", async (req, res) => {
     if (!user) {
       return res.status(400).send("User not existing");
     }
+    const requestDate = req.get("Request-Date");
     const response = {
       data: {
         user: {
@@ -20,7 +22,7 @@ router.get("/:id", async (req, res) => {
           name: user.name,
           email: user.email,
         },
-        "request-date": new Date().toUTCString(),
+        "request-date": requestDate,
       },
     };
     res.json(response);
@@ -29,19 +31,16 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", checkContentType, checkRequestDate, async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const nameRegex = /^[A-Za-z0-9]+$/;
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={[}\]|:;"'<,>.?/]).{1,}$/;
-    if (typeof name !== "string" || !nameRegex.test(name)) {
+    if (!isValidName(name)) {
       return res.status(400).send("Name must only contain English alphabet and numbers.");
     }
-    if (typeof email !== "string" || !emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       return res.status(400).send("Invalid email format.");
     }
-    if (typeof password !== "string" || !passwordRegex.test(password)) {
+    if (!isValidPassword(password)) {
       return res
         .status(400)
         .send(
@@ -49,6 +48,7 @@ router.post("/", async (req, res) => {
         );
     }
     const user = await createUser(name, email, password);
+    const requestDate = req.get("Request-Date");
     const response = {
       data: {
         user: {
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
           name: user.name,
           email: user.email,
         },
-        "request-date": new Date().toUTCString(),
+        "request-date": requestDate,
       },
     };
     res.send(response);
