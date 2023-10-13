@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Data } from "../public/getPostData";
+import { data } from "../public/getPostData";
 
 function App() {
-  const [likeCount, setLikeCount] = useState(Data.likeCount);
+  const [likeCount, setLikeCount] = useState(data.likeCount);
   const [liked, setLiked] = useState(false);
 
   function toggleLike() {
@@ -17,9 +17,9 @@ function App() {
   return (
     <div className="flex justify-center items-center pt-10">
       <div className="max-w-4xl mx-10 p-10 border border-black rounded-lg">
-        <h1 className="text-2xl font-bold">{Data.title}</h1>
+        <h1 className="text-2xl font-bold">{data.title}</h1>
         <article className="mb-2">
-          {Data.sections.map((section) => (
+          {data.sections.map((section) => (
             <div key={section.title} className="pt-4">
               <h2 className="text-xl font-semibold">{section.title}</h2>
               <p>{section.content.explanation}</p>

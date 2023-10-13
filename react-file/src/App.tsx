@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Data } from "./getPostData";
+import { data } from "./getPostData";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const Button = styled.button`
 `;
 
 function App() {
-  const [likeCount, setLikeCount] = useState(Data.likeCount);
+  const [likeCount, setLikeCount] = useState(data.likeCount);
   const [liked, setLiked] = useState(false);
 
   function toggleLike() {
@@ -42,9 +42,9 @@ function App() {
   return (
     <Wrapper>
       <Post>
-        <h1>{Data.title}</h1>
+        <h1>{data.title}</h1>
         <article>
-          {Data.sections.map((section) => (
+          {data.sections.map((section) => (
             <div key={section.title}>
               <h2>{section.title}</h2>
               <p>{section.content.explanation}</p>

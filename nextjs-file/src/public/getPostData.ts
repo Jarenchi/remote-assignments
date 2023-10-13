@@ -1,4 +1,53 @@
-const Data = {
+interface Data {
+  title: string;
+  likeCount: number;
+  sections: Section[];
+}
+
+interface Section {
+  title: string;
+  content: SectionContent;
+}
+
+interface SectionContent {
+  question: string;
+  explanation?: string;
+  features?: Feature[];
+  hooks?: {
+    useState: HookDetails;
+    useEffect: HookDetails;
+  };
+  rendering?: {
+    CSR: RenderingType;
+    SSR: RenderingType;
+    Nextjs: NextjsDetails;
+  };
+}
+
+interface Feature {
+  id: number;
+  content: string;
+}
+
+interface HookDetails {
+  title: string;
+  explanation: string;
+  sideEffect?: string;
+}
+
+interface RenderingType {
+  title: string;
+  explanation: string;
+  pros: string[];
+  cons: string[];
+}
+
+interface NextjsDetails {
+  title: string;
+  explanation: string;
+}
+
+const data: Data = {
   title: "This is a sample post.",
   likeCount: 5,
   sections: [
@@ -95,4 +144,4 @@ const Data = {
   ],
 };
 
-export { Data };
+export { data };
